@@ -1,10 +1,17 @@
 module Furry
+  # Application router.
+  #
+  # @example
+  #   router = Router.new
+  #   router.draw do
+  #     get '/', 'home#index'
+  #   end
   class Router
     attr_reader :mappings
 
     # Initialize a new +Router+.
     def initialize
-      @mappings = {}
+      @mappings = { GET: [], POST: [] }
     end
 
     # Map a handler to (method,path) pair. Pass either a proc or a
@@ -14,16 +21,21 @@ module Furry
     # @param path [String]
     # @param handler [String] controller & action (e.g. +'info#about'+)
     def map(method, path, handler)
-      segments = []
-      # replace things like ":id" with "(?<id>\w+)"
-      path = Regexp.new(path.gsub(/:\w+/) { |m| m = m[1..-1]; segments << m; "(?<#{m}>\\w+)" } + '/?$')
-      @mappings[[method, path]] = [segments, handler]
+      route = Route.new(method, path, handler)
+      @mappings[method] ||= []
+      @mappings[method] << route
     end
 
+    # Map a GET request handler to path.
+    #
+    # @see #map
     def get(path, handler)
       map(:GET, path, handler)
     end
 
+    # Map a post request handler to path.
+    #
+    # @see #map
     def post(path, handler)
       map(:POST, path, handler)
     end
@@ -35,16 +47,8 @@ module Furry
     #
     # @return [Array] array of +(handler,params)+
     def match(method, path)
-      all = @mappings.select { |(meth, _), _| method == meth }
-
-      (_, regexp), (segments, handler) = all.find do |(_, reg), _|
-        reg.match(path)
-      end
-
-      _, *segment_values = regexp.match(path).to_a
-      params = segments.zip(segment_values).to_h
-
-      [handler, params]
+      route = @mappings[method].find { |r| r.matches?(path) }
+      route.match(path)
     end
 
     # Draw on the router.

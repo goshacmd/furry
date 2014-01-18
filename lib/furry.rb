@@ -4,6 +4,7 @@ require 'active_support/hash_with_indifferent_access'
 require 'cgi'
 
 require 'furry/version'
+require 'furry/route'
 require 'furry/router'
 require 'furry/controller'
 require 'furry/container'
