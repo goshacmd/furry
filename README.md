@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/goshakkk/furry.png?branch=master)](https://travis-ci.org/goshakkk/furry)
 [![Code Climate](https://codeclimate.com/github/goshakkk/furry.png)](https://codeclimate.com/github/goshakkk/furry)
 
-Simplisitc web framework.
+Simplistic web framework.
 
 ## Installation
 
