@@ -1,16 +1,20 @@
 module Furry
   class App
-    attr_reader :router
+    class << self
+      attr_reader :router
 
-    # Initialize a new +App+.
-    def initialize
-      @router = Router.new
+      # (see Router#map)
+      def map(method, path, handler = nil, &block)
+        router.map(method, path, handler, &block)
+      end
+
+      def inherited(base)
+        super
+        base.instance_variable_set(:@router, Router.new)
+      end
     end
 
-    # (see Router#map)
-    def map(method, path, handler = nil, &block)
-      router.map(method, path, handler, &block)
-    end
+    delegate :router, to: :class
 
     # Process request.
     def call(env)

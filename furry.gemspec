@@ -22,4 +22,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec', '~> 2.14'
 
   spec.add_dependency 'rack', '~> 1.4'
+  spec.add_dependency 'activesupport', '~> 4.0'
 end
