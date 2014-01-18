@@ -7,7 +7,7 @@ describe Furry::App do
     let(:controller) do
       Class.new do
         attr_reader :params
-        def initialize(params); @params = params end
+        def initialize(params, query_params); @params = params end
         def about; [200, {}, [params['version']]] end
       end
     end
@@ -19,7 +19,7 @@ describe Furry::App do
     end
 
     it 'instantiates controller and calls action' do
-      expect(app.call_action(handler, {'version'=>'1.0.0'})).to eq [200, {}, ['1.0.0']]
+      expect(app.call_action(handler, {'version'=>'1.0.0'}, {})).to eq [200, {}, ['1.0.0']]
     end
   end
 
@@ -37,7 +37,7 @@ describe Furry::App do
 
     it 'calls controller action' do
       router.stub(match: 'info#about')
-      expect(app).to receive(:call_action).with('info#about').and_return([200, {}, ['O']])
+      expect(app).to receive(:call_action).with('info#about', {}).and_return([200, {}, ['O']])
       expect(call(app, :GET, '/')).to eq [200, {}, ['O']]
     end
 
@@ -47,6 +47,6 @@ describe Furry::App do
   end
 
   def call(app, method, path)
-    app.call('REQUEST_METHOD' => method.to_s, 'REQUEST_PATH' => path)
+    app.call('REQUEST_METHOD' => method.to_s, 'REQUEST_PATH' => path, 'QUERY_STRING' => '')
   end
 end

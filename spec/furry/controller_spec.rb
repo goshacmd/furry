@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Furry::Controller do
-  subject(:controller) { described_class.new({}) }
+  subject(:controller) { described_class.new({}, {}) }
 
   describe '#render' do
     it 'returns rack response for supplied text and status code' do

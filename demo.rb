@@ -4,7 +4,7 @@ require 'furry'
 class DemoApp < Furry::App
   class InfoController < Controller
     def about
-      render "Running Furry Web Framework v#{Furry::VERSION} on Ruby #{RUBY_VERSION}"
+      render "Running Furry Web Framework v#{Furry::VERSION} on Ruby #{RUBY_VERSION}. #{params[:thing]}"
     end
 
     def health
