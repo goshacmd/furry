@@ -24,4 +24,10 @@ describe Furry::Controller do
       expect(controller.execute_action(:index2)).to eq [200, {}, ['Index 2']]
     end
   end
+
+  describe '.action_methods' do
+    it 'returns names of methods defined on controller subclass' do
+      expect(controller_class.action_methods).to eq [:index, :index2]
+    end
+  end
 end

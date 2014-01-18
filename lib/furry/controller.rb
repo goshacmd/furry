@@ -2,6 +2,8 @@ module Furry
   class Controller
     attr_reader :params
 
+    delegate :action_methods, to: :class
+
     # Intitialize a new +Controller+.
     #
     # @param params [Hash] a hash of params
@@ -15,9 +17,22 @@ module Furry
       @rendered = [status, {}, [text]]
     end
 
+    # Execute an action.
+    #
+    # @param action_name [String]
     def execute_action(action_name)
+      unless action_methods.include? action_name.to_sym
+        raise ArgumentError,
+          "Invalid action name: #{action_name} on controller #{self.class.name}"
+      end
+
       ret = send(action_name)
       @rendered || ret
+    end
+
+    # Compute a list of valid actions.
+    def self.action_methods
+      public_instance_methods - Controller.public_instance_methods
     end
   end
 end
