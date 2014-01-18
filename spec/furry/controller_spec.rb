@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Furry::Controller do
   let(:controller_class) do
     Class.new(described_class) do
-      def index; render 'Index' end
+      def index; render text: 'Index' end
       def index2; [200, {}, ['Index 2']] end
     end
   end

@@ -12,12 +12,21 @@ module Furry
       @params = HashWithIndifferentAccess.new query_params.merge(params)
     end
 
-    # Render some text.
+    # @overload render(text: nil, status: 200)
+    #   Render some text.
+    #   @param text [String] text to render
+    #   @param status [Integer] status code
     #
-    # @param text [String] text to render
-    # @param status [Integer] status code to respond with
-    def render(text, status: 200)
-      @rendered = [status, {}, [text]]
+    # @overload render(erb: nil, status: 200)
+    #   Render ERB template.
+    #   @param erb [String] inline erb template
+    #   @param status [Integer] status code
+    def render(text: nil, erb: nil, status: 200)
+      if text
+        @rendered = [status, {}, [text]]
+      elsif erb
+        @rendered = [status, {}, [ERB.new(erb).result(binding)]]
+      end
     end
 
     # Execute an action.

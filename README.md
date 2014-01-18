@@ -21,12 +21,12 @@ Or install it yourself as:
 class DemoApp < Furry::App
   class HomeController < Controller
     def index
-      render 'Ta-da'
+      render text: 'Ta-da'
     end
 
     def random_number
-      number = rand(0..params[:max].to_i)
-      render "The number is #{number}"
+      @number = rand(0..params[:max].to_i)
+      render erb: "The number is <%= @number %>"
     end
   end
 

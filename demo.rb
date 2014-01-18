@@ -4,15 +4,15 @@ require 'furry'
 class DemoApp < Furry::App
   class InfoController < Controller
     def about
-      render "Running Furry Web Framework v#{Furry::VERSION} on Ruby #{RUBY_VERSION}. #{params[:thing]}"
+      render erb: "Running Furry Web Framework v<%= Furry::VERSION %> on Ruby <%= RUBY_VERSION %>. <%= params[:thing] %>"
     end
 
     def health
-      render 'OK'
+      render text: 'OK'
     end
 
     def number
-      render "The number was #{params[:number]}"
+      render erb: "The number was <%= params[:number] %>"
     end
   end
 
