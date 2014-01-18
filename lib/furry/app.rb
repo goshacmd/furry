@@ -25,8 +25,9 @@ module Furry
     # @return [Array] rack response
     def call_action(handler, params, query_params)
       controller_name, action_name = handler.split('#')
-      controller = lookup_controller(controller_name)
-      controller.new(params, query_params).send(action_name)
+      controller_class = lookup_controller(controller_name)
+      controller = controller_class.new(params, query_params)
+      controller.execute_action(action_name)
     end
 
     # Process request.

@@ -5,9 +5,7 @@ describe Furry::App do
 
   describe '#call_action' do
     let(:controller) do
-      Class.new do
-        attr_reader :params
-        def initialize(params, query_params); @params = params end
+      Class.new(Furry::Controller) do
         def about; [200, {}, [params['version']]] end
       end
     end
