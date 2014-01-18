@@ -30,8 +30,10 @@ class DemoApp < Furry::App
     end
   end
 
-  router.get '/', 'home#index'
-  router.get '/random/:max', 'home#random_number'
+  router.draw do
+    get '/', 'home#index'
+    get '/random/:max', 'home#random_number'
+  end
 end
 ```
 

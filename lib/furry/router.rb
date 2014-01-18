@@ -35,7 +35,7 @@ module Furry
     #
     # @return [Array] array of +(handler,params)+
     def match(method, path)
-      all = @mappings.select { |(meth, path), _| method == meth }
+      all = @mappings.select { |(meth, _), _| method == meth }
 
       (_, regexp), (segments, handler) = all.find do |(_, reg), _|
         reg.match(path)
@@ -45,6 +45,13 @@ module Furry
       params = segments.zip(segment_values).to_h
 
       [handler, params]
+    end
+
+    # Draw on the router.
+    #
+    # Just executes the block in the context of router.
+    def draw(&block)
+      instance_exec(&block)
     end
   end
 end
