@@ -1,4 +1,6 @@
 language: ruby
 rvm:
   - 2.1.0
+allowed_failures:
   - rbx
+fast_finish: true
