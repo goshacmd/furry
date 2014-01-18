@@ -7,13 +7,13 @@ describe Furry::Router do
     it 'adds the route->handler mapping' do
       handler = 'info#index'
       path = '/'
-      path_re = %r{/$}
+      path_re = %r{//?$}
 
       expect { router.map(:GET, path, handler) }.to \
         change { router.mappings[[:GET, path_re]] }.to [[], handler]
 
       path = '/:number'
-      path_re = %r{/(?<number>\w+)$}
+      path_re = %r{/(?<number>\w+)/?$}
 
       expect { router.map(:GET, path, handler) }.to \
         change { router.mappings[[:GET, path_re]] }.to [['number'], handler]

@@ -16,7 +16,7 @@ module Furry
     def map(method, path, handler)
       segments = []
       # replace things like ":id" with "(?<id>\w+)"
-      path = Regexp.new(path.gsub(/:\w+/) { |m| m = m[1..-1]; segments << m; "(?<#{m}>\\w+)" } + '$')
+      path = Regexp.new(path.gsub(/:\w+/) { |m| m = m[1..-1]; segments << m; "(?<#{m}>\\w+)" } + '/?$')
       @mappings[[method, path]] = [segments, handler]
     end
 
