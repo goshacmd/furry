@@ -7,8 +7,6 @@ module Furry
     class << self
       attr_reader :router
 
-      delegate :map, to: :router
-
       def inherited(base)
         super
         base.instance_variable_set(:@router, Router.new)

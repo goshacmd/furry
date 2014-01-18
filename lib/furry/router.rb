@@ -14,6 +14,14 @@ module Furry
       @mappings[[method, path]] = handler
     end
 
+    def get(path, handler)
+      map(:GET, path, handler)
+    end
+
+    def post(path, handler)
+      map(:POST, path, handler)
+    end
+
     # Find a route handler.
     #
     # @param method [Symbol] request method
