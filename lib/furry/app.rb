@@ -1,4 +1,18 @@
 module Furry
+  # Furry application.
+  #
+  # @example basic application
+  #   class DemoApp < Furry::App
+  #     class HomeController < Controller
+  #       def index
+  #         render 'Hey there'
+  #       end
+  #     end
+  #
+  #     router.draw do
+  #       get '/', 'home#index'
+  #     end
+  #   end
   class App
     extend Container
 
@@ -31,6 +45,8 @@ module Furry
     end
 
     # Process request.
+    #
+    # @param env [Hash] environment hash
     def call(env)
       method = env['REQUEST_METHOD'].to_sym
       path = env['REQUEST_PATH']

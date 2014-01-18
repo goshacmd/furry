@@ -13,6 +13,9 @@ module Furry
     end
 
     # Render some text.
+    #
+    # @param text [String] text to render
+    # @param status [Integer] status code to respond with
     def render(text, status: 200)
       @rendered = [status, {}, [text]]
     end
