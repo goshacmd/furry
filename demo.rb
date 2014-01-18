@@ -12,8 +12,8 @@ class DemoApp < Furry::App
     end
   end
 
-  router.get :GET, '/about', 'info#about'
-  router.get :GET, '/health', 'info#health'
+  router.get '/about', 'info#about'
+  router.get '/health', 'info#health'
 end
 
 Rack::Handler::WEBrick.run DemoApp.new, Port: 8888

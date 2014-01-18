@@ -6,15 +6,25 @@ Simplisitc web framework.
 
 Add this line to your application's Gemfile:
 
-    gem 'swf'
+    gem 'furry'
 
 Or install it yourself as:
 
-    $ gem install swf
+    $ gem install furry
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+class DemoApp < Furry::App
+  class HomeController < Controller
+    def index
+      render 'Ta-da'
+    end
+  end
+
+  router.get '/', 'home#index'
+end
+```
 
 ## License
 
