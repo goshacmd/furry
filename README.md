@@ -23,10 +23,23 @@ class DemoApp < Furry::App
     def index
       render 'Ta-da'
     end
+
+    def random_number
+      number = rand(0..params[:max].to_i)
+      render "The number is #{number}"
+    end
   end
 
   router.get '/', 'home#index'
+  router.get '/random/:max', 'home#random_number'
 end
+```
+
+```bash
+$ curl localhost:8888
+Ta-da
+$ curl localhost:8888/random/100
+The number is 42
 ```
 
 ## License

@@ -4,7 +4,14 @@ describe Furry::App do
   subject(:app) { described_class.new }
 
   describe '#call_action' do
-    let(:controller) { Class.new { def about; [200, {}, ['OK']] end } }
+    let(:controller) do
+      Class.new do
+        attr_reader :params
+        def initialize(params); @params = params end
+        def about; [200, {}, [params['version']]] end
+      end
+    end
+
     let(:handler) { 'info#about' }
 
     before do
@@ -12,7 +19,7 @@ describe Furry::App do
     end
 
     it 'instantiates controller and calls action' do
-      expect(app.call_action(handler)).to eq [200, {}, ['OK']]
+      expect(app.call_action(handler, {'version'=>'1.0.0'})).to eq [200, {}, ['1.0.0']]
     end
   end
 

@@ -10,10 +10,15 @@ class DemoApp < Furry::App
     def health
       render 'OK'
     end
+
+    def number
+      render "The number was #{params[:number]}"
+    end
   end
 
   router.get '/about', 'info#about'
   router.get '/health', 'info#health'
+  router.get '/numbers/:number', 'info#number'
 end
 
 Rack::Handler::WEBrick.run DemoApp.new, Port: 8888
