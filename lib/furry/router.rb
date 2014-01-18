@@ -15,7 +15,8 @@ module Furry
     # @param handler [String] controller & action (e.g. +'info#about'+)
     def map(method, path, handler)
       segments = []
-      path = Regexp.new(path.gsub(/:\w+/) { |m| segments << m[1..-1]; '(\w+)' } + '$')
+      # replace things like ":id" with "(?<id>\w+)"
+      path = Regexp.new(path.gsub(/:\w+/) { |m| m = m[1..-1]; segments << m; "(?<#{m}>\\w+)" } + '$')
       @mappings[[method, path]] = [segments, handler]
     end
 

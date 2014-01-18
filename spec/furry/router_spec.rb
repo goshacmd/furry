@@ -13,10 +13,10 @@ describe Furry::Router do
         change { router.mappings[[:GET, path_re]] }.to [[], handler]
 
       path = '/:number'
-      path_re = %r{/(\w+)$}
+      path_re = %r{/(?<number>\w+)$}
 
       expect { router.map(:GET, path, handler) }.to \
-        change { puts router.inspect; router.mappings[[:GET, path_re]] }.to [['number'], handler]
+        change { router.mappings[[:GET, path_re]] }.to [['number'], handler]
     end
   end
 
