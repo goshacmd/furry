@@ -3,6 +3,19 @@ require 'spec_helper'
 describe Furry::App do
   subject(:app) { described_class.new }
 
+  describe '#call_action' do
+    let(:controller) { Class.new { def about; [200, {}, ['OK']] end } }
+    let(:handler) { 'info#about' }
+
+    before do
+      app.stub(lookup_controller: controller)
+    end
+
+    it 'instantiates controller and calls action' do
+      expect(app.call_action(handler)).to eq [200, {}, ['OK']]
+    end
+  end
+
   describe '#call' do
     let(:router) { double('router', match: nil) }
 
@@ -15,11 +28,10 @@ describe Furry::App do
       call(app, :GET, '/')
     end
 
-    it 'calls the route handler' do
-      handler = double
-      router.stub(match: handler)
-      expect(handler).to receive(:call)
-      call(app, :GET, '/')
+    it 'calls controller action' do
+      router.stub(match: 'info#about')
+      expect(app).to receive(:call_action).with('info#about').and_return([200, {}, ['O']])
+      expect(call(app, :GET, '/')).to eq [200, {}, ['O']]
     end
 
     it 'returns four-oh-four if no handler is found' do

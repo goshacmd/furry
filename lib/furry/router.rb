@@ -9,10 +9,9 @@ module Furry
     #
     # @param method [Symbol] request method (+:GET+, +:POST+, etc)
     # @param path [String]
-    # @param handler [#call] route handler
-    # @param block [Proc] route handler
-    def map(method, path, handler = nil, &block)
-      @mappings[[method, path]] = handler || block
+    # @param handler [String] controller & action (e.g. +'info#about'+)
+    def map(method, path, handler)
+      @mappings[[method, path]] = handler
     end
 
     # Find a route handler.

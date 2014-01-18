@@ -1,12 +1,13 @@
 module Furry
   class App
+    extend Container
+
+    Controller = Controller
+
     class << self
       attr_reader :router
 
-      # (see Router#map)
-      def map(method, path, handler = nil, &block)
-        router.map(method, path, handler, &block)
-      end
+      delegate :map, to: :router
 
       def inherited(base)
         super
@@ -14,16 +15,26 @@ module Furry
       end
     end
 
-    delegate :router, to: :class
+    delegate :router, :lookup_controller, to: :class
+
+    # Call a controller action.
+    #
+    # @param handler [String] a string of form
+    #   +controller_name#action_name+, e.g. +info#about+
+    #
+    # @return [Array] rack response
+    def call_action(handler)
+      controller_name, action_name = handler.split('#')
+      controller = lookup_controller(controller_name)
+      controller.new.send(action_name)
+    end
 
     # Process request.
     def call(env)
       method = env['REQUEST_METHOD'].to_sym
       path =  env['REQUEST_PATH']
-
       if handler = router.match(method, path)
-        arity = handler.respond_to?(:arity) && handler.arity || 0
-        arity == 0 ? handler.call : handler.call(env)
+        call_action(handler)
       else
         [404, {}, ['Route not found']]
       end
