@@ -4,7 +4,6 @@ describe Furry::Controller do
   let(:controller_class) do
     Class.new(described_class) do
       def index; render text: 'Index' end
-      def index2; [200, {}, ['Index 2']] end
     end
   end
 
@@ -19,13 +18,13 @@ describe Furry::Controller do
     end
 
     it 'returns rendered content' do
-      expect(controller.execute_action(:index)).to eq [200, {}, ['Index']]
+      expect(controller.execute_action(:index)).to eq [200, {'Content-Type' => 'text/plain'}, ['Index']]
     end
   end
 
   describe '.action_methods' do
     it 'returns names of methods defined on controller subclass' do
-      expect(controller_class.action_methods).to eq [:index, :index2]
+      expect(controller_class.action_methods).to eq [:index]
     end
   end
 end

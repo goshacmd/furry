@@ -4,20 +4,24 @@ describe Furry::App do
   subject(:app) { described_class.new }
 
   describe '#call_action' do
-    let(:controller) do
+    let(:controller_class) do
       Class.new(Furry::Controller) do
         def about; render text: params['version'] end
       end
     end
 
+    let(:controller) { controller_class.new(nil) }
+
     let(:handler) { 'info#about' }
 
     before do
-      app.stub(lookup_controller: controller)
+      app.stub(lookup_controller: controller_class)
+      controller_class.stub(new: controller)
     end
 
     it 'instantiates controller and calls action' do
-      expect(app.call_action(handler, {'version'=>'1.0.0'}, {})).to eq [200, {}, ['1.0.0']]
+      expect(controller).to receive(:execute_action)
+      app.call_action(handler, {'version'=>'1.0.0'}, {})
     end
   end
 
