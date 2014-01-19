@@ -15,8 +15,10 @@ module Furry
 
         if text
           self._body = text
+          self._headers['Content-Type'] = 'text/plain'
         elsif erb
           self._body = ERB.new(erb).result(binding)
+          self._headers['Content-Type'] = 'text/html'
         end
       end
     end

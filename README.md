@@ -23,7 +23,7 @@ require 'furry'
 class DemoApp < Furry::App
   class HomeController < Controller
     def index
-      render text: 'Ta-da'
+      render erb: 'Ta-da'
     end
 
     def random_number
