@@ -29,6 +29,14 @@ module Furry
       end
     end
 
+    # Redirect the browser to +location+.
+    #
+    # @param location [String]
+    # @param status [Integer] status code
+    def redirect_to(location, status: 302)
+      @rendered = [status, { 'Location' => location }, []]
+    end
+
     # Execute an action.
     #
     # @param action_name [String]

@@ -3,6 +3,10 @@ require 'furry'
 
 class DemoApp < Furry::App
   class InfoController < Controller
+    def index
+      redirect_to '/about'
+    end
+
     def about
       render erb: "Running Furry Web Framework v<%= Furry::VERSION %> on Ruby <%= RUBY_VERSION %>. <%= params[:thing] %>"
     end
@@ -14,12 +18,24 @@ class DemoApp < Furry::App
     def number
       render erb: "The number was <%= params[:number] %>"
     end
+
+    def random_number
+      @number = rand(0..params[:number].to_i)
+      render erb: "rand(0..#{params[:number]}) # => #{@number}"
+    end
+
+    def random_100
+      redirect_to '/random/100'
+    end
   end
 
   router.draw do
+    get '/', 'info#index'
     get '/about', 'info#about'
     get '/health', 'info#health'
     get '/numbers/:number', 'info#number'
+    get '/random', 'info#random_100'
+    get '/random/:number', 'info#random_number'
   end
 end
 
