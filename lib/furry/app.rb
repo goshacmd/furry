@@ -29,6 +29,16 @@ module Furry
 
     delegate :router, :lookup_controller, to: :class
 
+    TEMPLATES = {}
+
+    # Find template by name.
+    #
+    # @param name [String] template name
+    # @return [String] template
+    def find_template(name)
+      TEMPLATES[name]
+    end
+
     # Call a controller action.
     #
     # @param handler [String] a string of form

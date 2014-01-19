@@ -7,10 +7,15 @@ module Furry
       #   @param status [Integer] status code
       #
       # @overload render(erb: nil, status: 200)
-      #   Render ERB template.
+      #   Render inline ERB template.
       #   @param erb [String] inline erb template
       #   @param status [Integer] status code
-      def render(text: nil, erb: nil, status: 200)
+      #
+      # @overload render(template: nil, status: 200)
+      #   Render ERB template.
+      #   @param template [String] template name
+      #   @param status [Integer] status code
+      def render(text: nil, erb: nil, template: nil, status: 200)
         self._status = status
 
         if text
@@ -18,6 +23,9 @@ module Furry
           self._headers['Content-Type'] = 'text/plain'
         elsif erb
           self._body = ERB.new(erb).result(binding)
+          self._headers['Content-Type'] = 'text/html'
+        elsif template
+          self._body = ERB.new(@app.find_template(template)).result(binding)
           self._headers['Content-Type'] = 'text/html'
         end
       end
