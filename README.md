@@ -47,8 +47,9 @@ end
 ```bash
 $ curl localhost:8888
 Ta-da
-$ curl -L localhost:8888/random
-The number is 42
+$ curl -I localhost:8888/random
+HTTP/1.1 302 Found
+Location: http://localhost:8888/random/100
 $ curl localhost:8888/random/500
 The number is 261
 ```

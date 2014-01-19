@@ -49,6 +49,7 @@ module Furry
     #
     # @return [Array] array of +(handler,params)+
     def match(method, path)
+      method = :GET if method == :HEAD
       route = @mappings[method].find { |r| r.matches?(path) }
       route.match(path)
     end
