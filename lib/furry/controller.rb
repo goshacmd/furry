@@ -1,15 +1,24 @@
 module Furry
   class Controller
+    include UrlHelpers
+
     attr_reader :params
 
     delegate :action_methods, to: :class
 
     # Intitialize a new +Controller+.
     #
+    # @param app [App] application
     # @param params [Hash] a hash of params
     # @param query_params [Hash] a hash of query params
-    def initialize(params = {}, query_params = {})
+    def initialize(app, params = {}, query_params = {})
+      @app = app
       @params = HashWithIndifferentAccess.new query_params.merge(params)
+    end
+
+    # @return [Router]
+    def router
+      @app.router
     end
 
     # @overload render(text: nil, status: 200)

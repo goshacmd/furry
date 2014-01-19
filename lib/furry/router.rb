@@ -7,11 +7,12 @@ module Furry
   #     get '/', 'home#index'
   #   end
   class Router
-    attr_reader :mappings
+    attr_reader :mappings, :names
 
     # Initialize a new +Router+.
     def initialize
-      @mappings = { GET: [], POST: [] }
+      @mappings = Hash.new { |h, k| h[k] = [] }
+      @names = {}
     end
 
     # Map a handler to (method,path) pair. Pass either a proc or a
@@ -20,24 +21,25 @@ module Furry
     # @param method [Symbol] request method (+:GET+, +:POST+, etc)
     # @param path [String]
     # @param handler [String] controller & action (e.g. +'info#about'+)
-    def map(method, path, handler)
+    # @param name [String] route name
+    def map(method, path, handler, name: nil)
       route = Route.new(method, path, handler)
-      @mappings[method] ||= []
+      @names[name] = route if name
       @mappings[method] << route
     end
 
     # Map a GET request handler to path.
     #
     # @see #map
-    def get(path, handler)
-      map(:GET, path, handler)
+    def get(*args)
+      map(:GET, *args)
     end
 
     # Map a post request handler to path.
     #
     # @see #map
-    def post(path, handler)
-      map(:POST, path, handler)
+    def post(path, *args)
+      map(:POST, *args)
     end
 
     # Find a route handler.

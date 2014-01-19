@@ -40,7 +40,7 @@ module Furry
     def call_action(handler, params, query_params)
       controller_name, action_name = handler.split('#')
       controller_class = lookup_controller(controller_name)
-      controller = controller_class.new(params, query_params)
+      controller = controller_class.new(self, params, query_params)
       controller.execute_action(action_name)
     end
 

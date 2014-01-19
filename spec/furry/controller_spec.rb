@@ -8,7 +8,9 @@ describe Furry::Controller do
     end
   end
 
-  subject(:controller) { controller_class.new }
+  let(:app) { double('app') }
+
+  subject(:controller) { controller_class.new(app) }
 
   describe '#execute_action' do
     it 'executes action' do
