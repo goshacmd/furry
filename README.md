@@ -18,6 +18,8 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
+require 'furry'
+
 class DemoApp < Furry::App
   class HomeController < Controller
     def index
@@ -28,11 +30,16 @@ class DemoApp < Furry::App
       @number = rand(0..params[:max].to_i)
       render erb: "The number is <%= @number %>"
     end
+
+    def random_100
+      redirect_to random_path(100)
+    end
   end
 
   router.draw do
     get '/', 'home#index'
-    get '/random/:max', 'home#random_number'
+    get '/random', 'home#random_100'
+    get '/random/:max', 'home#random_number', name: 'random'
   end
 end
 ```
@@ -40,8 +47,10 @@ end
 ```bash
 $ curl localhost:8888
 Ta-da
-$ curl localhost:8888/random/100
+$ curl -L localhost:8888/random
 The number is 42
+$ curl localhost:8888/random/500
+The number is 261
 ```
 
 ## License
