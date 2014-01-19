@@ -24,4 +24,10 @@ describe Furry::Route do
       expect(route.match('/posts/1')).to eq ['posts#show', { 'post_id' => '1' }]
     end
   end
+
+  describe '#generate_url' do
+    it 'generates URL and fills segments' do
+      expect(route.generate_url([100])).to eq '/posts/100'
+    end
+  end
 end

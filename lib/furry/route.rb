@@ -35,6 +35,21 @@ module Furry
       [handler, params]
     end
 
+    # Generate URL for parameters.
+    #
+    # @param segment_values [Array] segment values
+    # @raise ArgumentError if wrong number of segment values is passed
+    # @return [String]
+    def generate_url(segment_values = [])
+      unless segments.count == segment_values.count
+        raise ArgumentError, "expected #{segments.count} segment values, got #{segment_values.count}"
+      end
+
+      params = segments.zip(segment_values).to_h
+
+      path.gsub(/:\w+/) { |m| m = m[1..-1]; params[m] }
+    end
+
     def inspect
       "#<#{self.class.name} #{method} #{path} => #{handler}>"
     end
