@@ -1,6 +1,11 @@
 module Furry
   class Controller
+    autoload :Rendering,   'furry/controller/rendering'
+    autoload :Redirecting, 'furry/controller/redirecting'
+
     include UrlHelpers
+    include Rendering
+    include Redirecting
 
     attr_reader :params
     attr_accessor :_status, :_headers, :_body
@@ -26,35 +31,6 @@ module Furry
     # Get rack response.
     def _rack_response
       [_status, _headers, [_body]]
-    end
-
-    # @overload render(text: nil, status: 200)
-    #   Render some text.
-    #   @param text [String] text to render
-    #   @param status [Integer] status code
-    #
-    # @overload render(erb: nil, status: 200)
-    #   Render ERB template.
-    #   @param erb [String] inline erb template
-    #   @param status [Integer] status code
-    def render(text: nil, erb: nil, status: 200)
-      self._status = status
-
-      if text
-        self._body = text
-      elsif erb
-        self._body = ERB.new(erb).result(binding)
-      end
-    end
-
-    # Redirect the browser to +location+.
-    #
-    # @param location [String]
-    # @param status [Integer] status code
-    def redirect_to(location, status: 302)
-      self._status = status
-      self._headers['Location'] = location
-      self._body = ''
     end
 
     # Execute an action.

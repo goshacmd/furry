@@ -5,12 +5,12 @@ require 'cgi'
 require 'erb'
 
 require 'furry/version'
-require 'furry/route'
-require 'furry/router'
-require 'furry/url_helpers'
-require 'furry/controller'
-require 'furry/container'
-require 'furry/app'
 
 module Furry
+  autoload :App,        'furry/app'
+  autoload :Route,      'furry/route'
+  autoload :Router,     'furry/router'
+  autoload :UrlHelpers, 'furry/url_helpers'
+  autoload :Controller, 'furry/controller'
+  autoload :Container,  'furry/container'
 end
