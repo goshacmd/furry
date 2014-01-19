@@ -1,4 +1,3 @@
-require 'rack'
 require 'furry'
 
 class DemoApp < Furry::App
@@ -38,5 +37,3 @@ class DemoApp < Furry::App
     get '/random/:number', 'info#random_number', name: 'random'
   end
 end
-
-Rack::Handler::WEBrick.run DemoApp.new, Port: 8888
