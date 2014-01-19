@@ -34,9 +34,11 @@ module Furry
     # Find template by name.
     #
     # @param name [String] template name
-    # @return [String] template
+    # @return [Array] a +(full_name,template)+ pair
     def find_template(name)
-      TEMPLATES[name]
+      TEMPLATES.find do |fn, _|
+        fn == name || fn.split('.').first == name
+      end
     end
 
     # Call a controller action.

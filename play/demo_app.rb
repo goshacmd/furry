@@ -1,4 +1,3 @@
-require 'rack'
 require 'furry'
 
 class DemoApp < Furry::App
@@ -25,8 +24,8 @@ class DemoApp < Furry::App
     end
   end
 
-  TEMPLATES['info/about'] = "Running Furry Web Framework v<%= Furry::VERSION %> on Ruby <%= RUBY_VERSION %>. <%= params[:thing] %>"
-  TEMPLATES['info/random_number'] = "rand(0..#{params[:number]}) # => #{@number}"
+  TEMPLATES['info/about.html.erb'] = "Running Furry Web Framework v<%= Furry::VERSION %> on Ruby <%= RUBY_VERSION %>. <%= params[:thing] %>"
+  TEMPLATES['info/random_number.html.erb'] = "rand(0..<%= params[:number] %>) # => <%= @number %>"
 
   router.draw do
     get '/', 'info#index'
@@ -36,5 +35,3 @@ class DemoApp < Furry::App
     get '/random/:number', 'info#random_number', name: 'random'
   end
 end
-
-Rack::Handler::WEBrick.run DemoApp.new, Port: 8888
