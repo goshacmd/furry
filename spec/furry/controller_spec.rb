@@ -21,10 +21,6 @@ describe Furry::Controller do
     it 'returns rendered content' do
       expect(controller.execute_action(:index)).to eq [200, {}, ['Index']]
     end
-
-    it 'returns action return value if nothing was rendered' do
-      expect(controller.execute_action(:index2)).to eq [200, {}, ['Index 2']]
-    end
   end
 
   describe '.action_methods' do

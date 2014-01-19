@@ -6,7 +6,7 @@ describe Furry::App do
   describe '#call_action' do
     let(:controller) do
       Class.new(Furry::Controller) do
-        def about; [200, {}, [params['version']]] end
+        def about; render text: params['version'] end
       end
     end
 

@@ -3,6 +3,7 @@ module Furry
     include UrlHelpers
 
     attr_reader :params
+    attr_accessor :_status, :_headers, :_body
 
     delegate :action_methods, to: :class
 
@@ -14,11 +15,17 @@ module Furry
     def initialize(app, params = {}, query_params = {})
       @app = app
       @params = HashWithIndifferentAccess.new query_params.merge(params)
+      @_headers = {}
     end
 
     # @return [Router]
     def router
       @app.router
+    end
+
+    # Get rack response.
+    def _rack_response
+      [_status, _headers, [_body]]
     end
 
     # @overload render(text: nil, status: 200)
@@ -31,10 +38,12 @@ module Furry
     #   @param erb [String] inline erb template
     #   @param status [Integer] status code
     def render(text: nil, erb: nil, status: 200)
+      self._status = status
+
       if text
-        @rendered = [status, {}, [text]]
+        self._body = text
       elsif erb
-        @rendered = [status, {}, [ERB.new(erb).result(binding)]]
+        self._body = ERB.new(erb).result(binding)
       end
     end
 
@@ -43,7 +52,9 @@ module Furry
     # @param location [String]
     # @param status [Integer] status code
     def redirect_to(location, status: 302)
-      @rendered = [status, { 'Location' => location }, []]
+      self._status = status
+      self._headers['Location'] = location
+      self._body = ''
     end
 
     # Execute an action.
@@ -55,8 +66,8 @@ module Furry
           "Invalid action name: #{action_name} on controller #{self.class.name}"
       end
 
-      ret = send(action_name)
-      @rendered || ret
+      send(action_name)
+      _rack_response
     end
 
     # Compute a list of valid actions.
