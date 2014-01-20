@@ -6,10 +6,6 @@ module Furry
         'html' => 'text/html'
       }
 
-      TEMPLATE_PROCESSORS = {
-        'erb' => -> template, bind { ERB.new(template).result(bind) }
-      }
-
       # @overload render(text: nil, status: 200)
       #   Render some text.
       #   @param text [String] text to render
@@ -35,13 +31,9 @@ module Furry
           self._headers['Content-Type'] = 'text/html'
         elsif template
           full_temp_name, temp = @app.find_template(template)
-          _, content_type, *exts = full_temp_name.split('.')
-          content_type ||= 'text'
+          content_type, body = Template.new(full_temp_name, temp).render(binding)
 
-          self._body = exts.reverse.reduce(temp) do |current_temp, engine_name|
-            TEMPLATE_PROCESSORS[engine_name].call(current_temp, binding)
-          end
-
+          self._body = body
           self._headers['Content-Type'] = CONTENT_TYPES[content_type]
         end
       end

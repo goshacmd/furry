@@ -11,6 +11,7 @@ module Furry
   autoload :Route,      'furry/route'
   autoload :Router,     'furry/router'
   autoload :UrlHelpers, 'furry/url_helpers'
+  autoload :Template,   'furry/template'
   autoload :Controller, 'furry/controller'
   autoload :Container,  'furry/container'
 end
